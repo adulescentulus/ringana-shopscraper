@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Scanner;
 
+import de.networkchallenge.ringana.shopscraper.web.configuration.RinganaConfig;
 import de.networkchallenge.ringana.shopscraper.web.configuration.SpringConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -29,8 +30,8 @@ import de.networkchallenge.ringana.shopscraper.web.model.ShopCategory;
 
 
 //@RestClientTest({ShopCategoriesService.class})
-@SpringBootTest(classes = {ShopCategoriesService.class, SpringConfig.class})
 //@ContextConfiguration(classes = SpringConfig.class)
+@SpringBootTest
 public class ShopCategoriesServiceServerUnitTest extends Assertions {
     // @Autowired
     // RestTemplateBuilder restTemplateBuilder;
@@ -40,7 +41,10 @@ public class ShopCategoriesServiceServerUnitTest extends Assertions {
 
     //@MockBean
     @Autowired
-    RestTemplate restTemplate;
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private RinganaConfig ringanaConfig;
 
     //@Autowired
     //private MockRestServiceServer mockServer;
@@ -62,7 +66,7 @@ public class ShopCategoriesServiceServerUnitTest extends Assertions {
         Assert.notNull(restTemplate);
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
         mockServer.expect(ExpectedCount.once(),
-          requestTo(new URI("http://localhost:8080/")))
+          requestTo(new URI(ringanaConfig.getCategoriesUrl())))
           .andExpect(method(HttpMethod.GET))
           .andRespond(withStatus(HttpStatus.OK)
           .contentType(MediaType.APPLICATION_JSON)
