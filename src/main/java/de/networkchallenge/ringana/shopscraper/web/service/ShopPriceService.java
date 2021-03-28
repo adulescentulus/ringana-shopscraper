@@ -1,19 +1,21 @@
 package de.networkchallenge.ringana.shopscraper.web.service;
 
 import de.networkchallenge.ringana.shopscraper.web.configuration.RinganaConfig;
+import de.networkchallenge.ringana.shopscraper.web.model.ZapiProducts;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import de.networkchallenge.ringana.shopscraper.web.model.ShopCategory;
-
 @Service
+@Slf4j
 @RequiredArgsConstructor
-public class ShopCategoriesService {
+public class ShopPriceService {
     private final RestTemplate restTemplate;
     private final RinganaConfig ringanaConfig;
 
-    public ShopCategory[] fetchAllCategories() {
-        return restTemplate.getForObject(ringanaConfig.getCategoriesUrl(), ShopCategory[].class);
+    public ZapiProducts fetchAllProductPrices() {
+        log.info("Getting all product prices");
+        return restTemplate.getForObject(ringanaConfig.getProductsUrl(), ZapiProducts.class);
     }
 }

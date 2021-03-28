@@ -2,4 +2,4 @@ spring:
   main:
     web-application-type: none
 ringana:
-  categoriesUrl: https://bla
+  productsUrl: https://bla

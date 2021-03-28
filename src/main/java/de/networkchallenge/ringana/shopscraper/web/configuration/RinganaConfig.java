@@ -8,5 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "ringana")
 public class RinganaConfig {
-    private String categoriesUrl;
+    private String productsUrl;
+    private String pricesUrl;
 }

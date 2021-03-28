@@ -1,13 +1,17 @@
 package de.networkchallenge.ringana.shopscraper.web.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ShopCategory {
-    private String matchcode;
-    private String category;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ZapiProducts {
+    List<ShopPrice> data;
+    boolean success;
 }
