@@ -6,6 +6,7 @@ import de.networkchallenge.ringana.shopscraper.web.configuration.RinganaConfig;
 import de.networkchallenge.ringana.shopscraper.web.configuration.SpringTestConfig;
 import de.networkchallenge.ringana.shopscraper.web.helper.TestHelper;
 import de.networkchallenge.ringana.shopscraper.web.model.ZapiProducts;
+import org.hamcrest.core.StringStartsWith;
 import org.json.JSONException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,11 +21,10 @@ import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 
 
@@ -50,15 +50,16 @@ public class ShopPriceServiceServerUnitTest extends Assertions {
     public void whenQueryShopProducts_thenItemsAreReturned() throws URISyntaxException, JsonProcessingException, JSONException {
         MockRestServiceServer mockServerReader = MockRestServiceServer.createServer(restTemplate);
         mockServerReader.expect(ExpectedCount.once(),
-          requestTo(new URI(ringanaConfig.getProductsUrl())))
-          .andExpect(method(HttpMethod.GET))
-          .andRespond(withStatus(HttpStatus.OK)
-          .contentType(MediaType.APPLICATION_JSON)
-          .body(TestHelper.readResource("/shop/prices.json"))
+            requestTo(StringStartsWith.startsWith(ringanaConfig.getPricesUrl())))
+              .andExpect(method(HttpMethod.GET))
+              .andExpect(queryParam("matchcodes", "test1", "test2"))
+              .andRespond(withStatus(HttpStatus.OK)
+              .contentType(MediaType.APPLICATION_JSON)
+              .body(TestHelper.readResource("/shop/prices.json"))
         );
         //Mockito.when()
                        
-        ZapiProducts prices = service.fetchAllProductPrices();
+        ZapiProducts prices = service.fetchAllProductPrices(Arrays.asList("test1", "test2"));
         mockServerReader.verify();
 
         assertNotNull(om);

@@ -2,4 +2,5 @@ spring:
   main:
     web-application-type: none
 ringana:
-  productsUrl: https://bla
+  productsUrl: ${RINGANA_PRODUCTS_URL:https://bla}
+  pricesUrl: ${RINGANA_PRICES_URL:https://prices}

@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -14,8 +17,10 @@ public class ShopPriceService {
     private final RestTemplate restTemplate;
     private final RinganaConfig ringanaConfig;
 
-    public ZapiProducts fetchAllProductPrices() {
+    public ZapiProducts fetchAllProductPrices(List<String> matchcodes) {
         log.info("Getting all product prices");
-        return restTemplate.getForObject(ringanaConfig.getProductsUrl(), ZapiProducts.class);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(ringanaConfig.getPricesUrl())
+                .queryParam("matchcodes", matchcodes);
+        return restTemplate.getForObject(builder.toUriString(), ZapiProducts.class);
     }
 }
