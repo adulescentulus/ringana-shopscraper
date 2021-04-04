@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<spring-native.version>0.9.1</spring-native.version>
+		<native_build_args></native_build_args>
 	</properties>
 	<dependencies>
 
@@ -104,7 +105,9 @@
 							<!-- The native image build needs to know the entry point to your application -->
 							<mainClass>de.networkchallenge.ringana.shopscraper.ShopscraperApplication</mainClass>
 							<buildArgs>
+								-J-Xmx4G
 								--enable-https
+								${native_build_args}
 							</buildArgs>
 						</configuration>
 						<executions>
@@ -119,6 +122,17 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>native-build-args</id>
+			<activation>
+				<property>
+					<name>env.NATIVE_BUILD_ARGS</name>
+				</property>
+			</activation>
+			<properties>
+				<!-- Override only if necessary -->
+				<native_build_args>${env.NATIVE_BUILD_ARGS}</native_build_args>
+			</properties>
+		</profile>
 	</profiles>
-
 </project>
