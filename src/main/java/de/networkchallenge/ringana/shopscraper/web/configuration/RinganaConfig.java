@@ -10,4 +10,5 @@ import org.springframework.context.annotation.Configuration;
 public class RinganaConfig {
     private String productsUrl;
     private String pricesUrl;
+    private String outputFolder;
 }
