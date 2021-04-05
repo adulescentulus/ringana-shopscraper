@@ -4,8 +4,15 @@ RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && mvn --version
 
 RUN native-image --version
 
-ADD . /build
 WORKDIR /build
+
+ADD pom.xml /build
+
+RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && \
+    mvn -Pnative-image --fail-never -B dependency:go-offline test org.graalvm.nativeimage:native-image-maven-plugin:native-image && \
+    rm -rf target
+
+ADD . /build
 
 ARG MAVEN_PATH
 ARG MAVEN_SNAPSHOT_URI
