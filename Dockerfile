@@ -12,7 +12,7 @@ RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && \
     mvn -Pnative-image --fail-never -B dependency:go-offline test org.graalvm.nativeimage:native-image-maven-plugin:native-image && \
     rm -rf target
 
-ADD . /build
+ADD src /build
 
 ARG MAVEN_PATH
 ARG MAVEN_SNAPSHOT_URI
@@ -30,7 +30,7 @@ FROM scratch
 MAINTAINER Andreas Groll
 
 # Add Spring Boot Native app spring-boot-graal to Container
-COPY --from=native-image "/build/target/shopscraper" pull-ids-cron
+COPY --from=native-image "/build/target/shopscraper" shopscraper
 COPY --from=native-image "/staticlibs" staticlibs
 COPY --from=native-image "/tmp_new" tmp
 
