@@ -107,6 +107,7 @@
 							<buildArgs>
 								-J-Xmx4G
 								--enable-https
+								--enable-all-security-services
 								${native_build_args}
 							</buildArgs>
 						</configuration>
