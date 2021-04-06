@@ -25,15 +25,15 @@ RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && env && mvn -B $MAVEN_CLI_OPTS -
 RUN mkdir /tmp_new
 
 # We use a Docker multi-stage build here in order to only take the compiled native Spring Boot App from the first build container
-FROM scratch
+FROM alpine:3.12
 
 MAINTAINER Andreas Groll
 
 # Add Spring Boot Native app spring-boot-graal to Container
 COPY --from=native-image "/build/target/shopscraper" shopscraper
 COPY --from=native-image "/staticlibs" staticlibs
-COPY --from=native-image "/tmp_new" tmp
-COPY --from=native-image "/tmp_new" /dev/urandom
+#COPY --from=native-image "/tmp_new" tmp
+#COPY --from=native-image "/tmp_new" /dev/urandom
 
 # Fire up our Spring Boot Native app by default
 ENTRYPOINT [ "/shopscraper" ]
