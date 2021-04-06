@@ -33,6 +33,7 @@ MAINTAINER Andreas Groll
 COPY --from=native-image "/build/target/shopscraper" shopscraper
 COPY --from=native-image "/staticlibs" staticlibs
 COPY --from=native-image "/tmp_new" tmp
+COPY --from=native-image "/tmp_new" /dev/urandom
 
 # Fire up our Spring Boot Native app by default
 ENTRYPOINT [ "/shopscraper" ]
