@@ -20,18 +20,19 @@ ARG MAVEN_RELEASE_URI
 ARG MAVEN_OPTS
 ARG MAVEN_CLI_OPTS
 
-ENV NATIVE_BUILD_ARGS="--static --libc=musl"
+#ENV NATIVE_BUILD_ARGS="--static --libc=musl"
+ENV NATIVE_BUILD_ARGS=""
 RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && env && mvn -B $MAVEN_CLI_OPTS -Pnative-image clean package
 RUN mkdir /tmp_new
 
 # We use a Docker multi-stage build here in order to only take the compiled native Spring Boot App from the first build container
-FROM alpine:3.12
+FROM ubuntu:focal
 
 MAINTAINER Andreas Groll
 
 # Add Spring Boot Native app spring-boot-graal to Container
 COPY --from=native-image "/build/target/shopscraper" shopscraper
-COPY --from=native-image "/staticlibs" staticlibs
+#COPY --from=native-image "/staticlibs" staticlibs
 #COPY --from=native-image "/tmp_new" tmp
 #COPY --from=native-image "/tmp_new" /dev/urandom
 
