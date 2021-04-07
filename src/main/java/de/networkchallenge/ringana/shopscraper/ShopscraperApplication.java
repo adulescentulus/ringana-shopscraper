@@ -8,7 +8,8 @@ import org.springframework.nativex.hint.TypeHints;
 @SpringBootApplication
 @TypeHints(value = {
 		@TypeHint(typeNames = {"de.networkchallenge.ringana.shopscraper.web.model.ShopProduct", "de.networkchallenge.ringana.shopscraper.web.model.ShopProduct$ShopProductBuilder"}),
-		@TypeHint(typeNames = {"de.networkchallenge.ringana.shopscraper.web.model.ShopPrice", "de.networkchallenge.ringana.shopscraper.web.model.ShopPrice$ShopPriceBuilder"})
+		@TypeHint(typeNames = {"de.networkchallenge.ringana.shopscraper.web.model.ShopPrice", "de.networkchallenge.ringana.shopscraper.web.model.ShopPrice$ShopPriceBuilder"}),
+		@TypeHint(typeNames = {"de.networkchallenge.ringana.shopscraper.web.model.ZapiProducts"})
 })
 public class ShopscraperApplication {
 
