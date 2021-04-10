@@ -1,0 +1,36 @@
+FROM ghcr.io/adulescentulus/docker-graalvm-maven:21.0.0.2 as native-image
+
+RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && mvn --version
+
+RUN native-image --version
+
+WORKDIR /build
+
+ADD pom.xml /build
+
+RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && \
+    mvn -Pnative-image --fail-never -B dependency:go-offline test org.graalvm.nativeimage:native-image-maven-plugin:native-image && \
+    rm -rf target
+
+ADD src /build/src
+
+ARG MAVEN_PATH
+ARG MAVEN_SNAPSHOT_URI
+ARG MAVEN_RELEASE_URI
+ARG MAVEN_OPTS
+ARG MAVEN_CLI_OPTS
+
+ENV NATIVE_BUILD_ARGS="-H:+StaticExecutableWithDynamicLibC"
+RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && env && mvn -B $MAVEN_CLI_OPTS -Pnative-image clean package
+RUN mkdir /tmp_new
+
+# use distroless as base image
+FROM gcr.io/distroless/base
+
+MAINTAINER Andreas Groll
+
+# Add Spring Boot Native app spring-boot-graal to Container
+COPY --from=native-image "/build/target/shopscraper" shopscraper
+
+# Fire up our Spring Boot Native app by default
+ENTRYPOINT [ "/shopscraper" ]
