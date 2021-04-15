@@ -27,7 +27,8 @@ RUN mkdir /tmp_new
 # use distroless as base image
 FROM gcr.io/distroless/base
 
-MAINTAINER Andreas Groll
+LABEL maintainer="Andreas Groll"
+LABEL org.opencontainers.image.source="https://github.com/holygrolli/ringana-shopscraper"
 
 # Add Spring Boot Native app spring-boot-graal to Container
 COPY --from=native-image "/build/target/shopscraper" shopscraper
