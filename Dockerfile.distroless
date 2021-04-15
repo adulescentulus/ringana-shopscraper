@@ -1,4 +1,4 @@
-FROM ghcr.io/adulescentulus/docker-graalvm-maven:21.0.0.2 as native-image
+FROM ghcr.io/holygrolli/docker-graalvm-maven:21.0.0.2 as native-image
 
 RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && mvn --version
 

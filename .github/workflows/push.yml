@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: run semantic-release to get next
-        uses: docker://ghcr.io/adulescentulus/docker-semantic-release:latest
+        uses: docker://ghcr.io/holygrolli/docker-semantic-release:latest
         with:
           args: semantic-release --generate-notes false --dry-run
         env:
@@ -79,7 +79,7 @@ jobs:
           platforms: linux/amd64
           push: ${{ github.event_name == 'push' && github.actor != 'dependabot[bot]' || github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]' }}
           tags: |
-            ghcr.io/adulescentulus/ringana-shopscraper:${{ env.NEXT_VERSION }}
+            ghcr.io/holygrolli/ringana-shopscraper:${{ env.NEXT_VERSION }}
       - name: Move cache
         run: |
           rm -rf /tmp/.buildx-cache
@@ -97,7 +97,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: run semantic-release to get next
-        uses: docker://ghcr.io/adulescentulus/docker-semantic-release:latest
+        uses: docker://ghcr.io/holygrolli/docker-semantic-release:latest
         with:
           args: semantic-release
         env:
