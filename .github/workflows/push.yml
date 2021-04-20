@@ -6,7 +6,7 @@ on:
 jobs:
   getNextVersion:
     name: Get next release version
-    if: github.event_name == 'push' && github.actor != 'dependabot[bot]' || github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]'
+    if: github.event_name == 'push' || github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     outputs:
       nextversion: ${{ steps.getnextversion.outputs.nextversion }}
@@ -31,7 +31,7 @@ jobs:
   build:
     name: Build
     needs: getNextVersion
-    if: github.event_name == 'push' && github.actor != 'dependabot[bot]' || github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    if: github.event_name == 'push' || github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -77,9 +77,9 @@ jobs:
           context: .
           file: Dockerfile.distroless
           platforms: linux/amd64
-          push: ${{ github.event_name == 'push' && github.actor != 'dependabot[bot]' || github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && github.actor != 'dependabot[bot]' }}
+          push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/holygrolli/ringana-shopscraper:${{ env.NEXT_VERSION }}
+            ghcr.io/${{ github.repository_owner }}/${{ github.event.repository.name }}:${{ env.NEXT_VERSION }}
       - name: Move cache
         run: |
           rm -rf /tmp/.buildx-cache
