@@ -20,7 +20,7 @@ public class ShopPriceService {
     public ZapiProducts fetchAllProductPrices(List<String> matchcodes) {
         log.info("Getting all product prices");
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(ringanaConfig.getPricesUrl())
-                .queryParam("matchcodes", matchcodes);
-        return restTemplate.getForObject(builder.toUriString(), ZapiProducts.class);
+                .queryParam("matchcodes[]", matchcodes);
+        return restTemplate.getForObject(builder.build(false).toUriString(), ZapiProducts.class);
     }
 }

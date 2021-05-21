@@ -21,7 +21,9 @@ import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
@@ -47,24 +49,29 @@ public class ShopPriceServiceServerUnitTest extends Assertions {
     private ObjectMapper om;
     
     @Test                                                                                          
-    public void whenQueryShopProducts_thenItemsAreReturned() throws URISyntaxException, JsonProcessingException, JSONException {
+    public void whenQueryShopProducts_thenItemsAreReturned() throws URISyntaxException, JsonProcessingException, JSONException, UnsupportedEncodingException {
         MockRestServiceServer mockServerReader = MockRestServiceServer.createServer(restTemplate);
         mockServerReader.expect(ExpectedCount.once(),
             requestTo(StringStartsWith.startsWith(ringanaConfig.getPricesUrl())))
               .andExpect(method(HttpMethod.GET))
-              .andExpect(queryParam("matchcodes", "test1", "test2"))
+              .andExpect(queryParam(encode("matchcodes[]"),
+                      encode("test1"), encode("test 2")))
               .andRespond(withStatus(HttpStatus.OK)
               .contentType(MediaType.APPLICATION_JSON)
               .body(TestHelper.readResource("/shop/prices.json"))
         );
         //Mockito.when()
                        
-        ZapiProducts prices = service.fetchAllProductPrices(Arrays.asList("test1", "test2"));
+        ZapiProducts prices = service.fetchAllProductPrices(Arrays.asList("test1", "test 2"));
         mockServerReader.verify();
 
         assertNotNull(om);
         String pricesJson = om.writeValueAsString(prices);
         assertNotNull(pricesJson);
         JSONAssert.assertEquals(TestHelper.readResource("/shop/prices.json"), pricesJson, JSONCompareMode.LENIENT);
+    }
+
+    private String encode(String s) throws UnsupportedEncodingException {
+        return URLEncoder.encode(s, "UTF-8").replace("+", "%20");
     }
 }
