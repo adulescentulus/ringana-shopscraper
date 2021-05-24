@@ -7,6 +7,7 @@ import org.springframework.nativex.hint.TypeHints;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.NumberFormat;
 import java.util.Locale;
 
 @SpringBootApplication
@@ -25,6 +26,10 @@ public class ShopscraperApplication {
 		System.out.println("Charset.defaultCharset()=" + Charset.defaultCharset());
 		System.out.println("file.encoding=" + System.getProperty("file.encoding"));
 		System.out.println("sun.jnu.encoding=" + System.getProperty("sun.jnu.encoding"));
+		double n = 1240.35;
+		NumberFormat nf = NumberFormat.getInstance(Locale.getDefault());
+		String val = nf.format(n);
+		System.out.println(val);
 		SpringApplication.run(ShopscraperApplication.class, args).close();
 	}
 
