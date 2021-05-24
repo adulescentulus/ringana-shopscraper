@@ -106,6 +106,7 @@
 							<mainClass>de.networkchallenge.ringana.shopscraper.ShopscraperApplication</mainClass>
 							<buildArgs>
 								-J-Xmx4G
+								-J-Dfile.encoding=UTF-8
 								--enable-https
 								--enable-all-security-services
 								${native_build_args}
