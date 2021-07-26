@@ -99,7 +99,7 @@
 					<plugin>
 						<groupId>org.graalvm.nativeimage</groupId>
 						<artifactId>native-image-maven-plugin</artifactId>
-						<version>21.0.0.2</version>
+						<version>21.2.0</version>
 						<configuration>
 							<imageName>${project.artifactId}</imageName>
 							<!-- The native image build needs to know the entry point to your application -->
