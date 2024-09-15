@@ -24,7 +24,7 @@ jobs:
         run: |
             test -e .VERSION && echo Determined next version: $(cat .VERSION) || ( echo No new version, do not create release && echo latest > .VERSION )
             echo "::set-output name=nextversion::$(cat .VERSION)"
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: version
           path: .VERSION
@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Restore .VERSION
         continue-on-error: true
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: version
       - name: Set nextVersion
