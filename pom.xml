@@ -82,13 +82,14 @@
 							<!-- The native image build needs to know the entry point to your application -->
 							<mainClass>de.networkchallenge.ringana.shopscraper.ShopscraperApplication</mainClass>
 							<buildArgs>
-								-J-Xmx4G
-								-J-Dfile.encoding=UTF-8
-								-J-Duser.language=de
-								-J-Duser.country=DE
-								--enable-https
-								--enable-all-security-services
-								${native_build_args}
+								<buildArg>-J-Xms4G</buildArg>
+								<buildArg>-J-Dfile.encoding=UTF-8</buildArg>
+								<buildArg>-J-Duser.language=de</buildArg>
+								<buildArg>-J-Duser.country=DE</buildArg>
+								<!--buildArg>-enable-url-protocols=http,https</buildArg-->
+								<buildArg>--enable-https</buildArg>
+								<buildArg>--enable-all-security-services</buildArg>
+								<buildArg>${native_build_args}</buildArg>
 							</buildArgs>
 							<quickBuild>true</quickBuild>
 						</configuration>
