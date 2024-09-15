@@ -1,4 +1,4 @@
-FROM ghcr.io/holygrolli/docker-graalvm-maven:21.0.0.2 as native-image
+FROM ghcr.io/holygrolli/docker-graalvm-maven:jdk17 as native-image
 
 RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && mvn --version
 
@@ -9,7 +9,7 @@ WORKDIR /build
 ADD pom.xml /build
 
 RUN source "$HOME/.sdkman/bin/sdkman-init.sh" && \
-    mvn -Pnative-image --fail-never -B dependency:go-offline test org.graalvm.nativeimage:native-image-maven-plugin:native-image && \
+    mvn -Pnative-image --fail-never -B dependency:go-offline test org.graalvm.buildtools:native-maven-plugin:native-image && \
     rm -rf target
 
 ADD src /build/src
