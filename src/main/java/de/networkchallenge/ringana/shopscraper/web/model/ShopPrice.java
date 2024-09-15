@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
 import lombok.extern.jackson.Jacksonized;
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
 import java.util.Date;
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.Map;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @JsonPropertyOrder(alphabetic=true)
+@RegisterReflectionForBinding
 public class ShopPrice {
     private String matchcode;
 
