@@ -6,14 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
 import lombok.extern.jackson.Jacksonized;
-import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 
 import java.util.Map;
 
 @Data
 @Jacksonized
 @Builder
-@RegisterReflectionForBinding
 public class ShopProduct {
     private String matchcode;
     private String category;

@@ -11,6 +11,7 @@ import de.networkchallenge.ringana.shopscraper.web.service.ShopProductsService;
 import de.networkchallenge.ringana.shopscraper.web.writer.PriceWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,7 @@ import java.util.*;
 @Component
 @Slf4j
 @RequiredArgsConstructor
+@RegisterReflectionForBinding({ShopPrice.class})
 public class FetchPricesRunner implements CommandLineRunner {
     private final ShopProductsService productsService;
     private final ShopPriceService priceService;
