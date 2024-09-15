@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.networkchallenge.ringana.shopscraper.web.configuration.RinganaConfig;
 import de.networkchallenge.ringana.shopscraper.web.configuration.SpringTestConfig;
 import de.networkchallenge.ringana.shopscraper.web.helper.TestHelper;
+import de.networkchallenge.ringana.shopscraper.web.model.ShopPrice;
 import de.networkchallenge.ringana.shopscraper.web.model.ZapiProducts;
 import org.hamcrest.core.StringStartsWith;
 import org.json.JSONException;
@@ -25,6 +26,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.*;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
@@ -62,7 +64,7 @@ public class ShopPriceServiceServerUnitTest extends Assertions {
         );
         //Mockito.when()
                        
-        ZapiProducts prices = service.fetchAllProductPrices(Arrays.asList("test1", "test 2"));
+        ShopPrice[] prices = service.fetchAllProductPrices(Arrays.asList("test1", "test 2"));
         mockServerReader.verify();
 
         assertNotNull(om);

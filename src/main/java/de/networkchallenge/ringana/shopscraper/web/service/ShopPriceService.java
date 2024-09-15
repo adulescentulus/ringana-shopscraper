@@ -1,6 +1,7 @@
 package de.networkchallenge.ringana.shopscraper.web.service;
 
 import de.networkchallenge.ringana.shopscraper.web.configuration.RinganaConfig;
+import de.networkchallenge.ringana.shopscraper.web.model.ShopPrice;
 import de.networkchallenge.ringana.shopscraper.web.model.ZapiProducts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +18,10 @@ public class ShopPriceService {
     private final RestTemplate restTemplate;
     private final RinganaConfig ringanaConfig;
 
-    public ZapiProducts fetchAllProductPrices(List<String> matchcodes) {
+    public ShopPrice[] fetchAllProductPrices(List<String> matchcodes) {
         log.info("Getting all product prices");
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(ringanaConfig.getPricesUrl())
                 .queryParam("matchcodes[]", matchcodes);
-        return restTemplate.getForObject(builder.build(false).toUriString(), ZapiProducts.class);
+        return restTemplate.getForEntity(builder.build(false).toUriString(), ShopPrice[].class).getBody();
     }
 }

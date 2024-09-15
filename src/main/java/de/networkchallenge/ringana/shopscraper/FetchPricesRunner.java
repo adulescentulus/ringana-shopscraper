@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.networkchallenge.ringana.shopscraper.web.commands.FetchMatchcodes;
 import de.networkchallenge.ringana.shopscraper.web.commands.FetchPrices;
 import de.networkchallenge.ringana.shopscraper.web.configuration.RinganaConfig;
+import de.networkchallenge.ringana.shopscraper.web.model.ShopPrice;
 import de.networkchallenge.ringana.shopscraper.web.model.ZapiProducts;
 import de.networkchallenge.ringana.shopscraper.web.service.ShopPriceService;
 import de.networkchallenge.ringana.shopscraper.web.service.ShopProductsService;
@@ -13,10 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.Spliterator;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -29,20 +27,8 @@ public class FetchPricesRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Set<String> matchcodes = new FetchMatchcodes(productsService).execute().getMatchcodes();
-        log.info(matchcodes.toString());
-
-        Spliterator<String> split = matchcodes.stream().spliterator();
-        int chunkSize = 10;
-
-        while(true) {
-            List<String> chunk = new ArrayList<>(chunkSize);
-            for (int i = 0; i < chunkSize && split.tryAdvance(chunk::add); i++){}
-            if (chunk.isEmpty()) break;
-            log.info("getting prices for matchcodes: {}", chunk);
-            ZapiProducts products = new FetchPrices(priceService, chunk).execute().getProducts();
-            products.getData().forEach(x -> log.info("got price for {}", x));
-            new PriceWriter(products.getData(), ringanaConfig.getOutputFolder(), om).write();
-        }
+        ShopPrice[] products = new FetchPrices(priceService, new ArrayList<>()).execute().getProducts();
+        Arrays.stream(products).forEach(x -> log.info("got price for {}", x.getMatchcode()));
+        new PriceWriter(Arrays.asList(products), ringanaConfig.getOutputFolder(), om).write();
     }
 }
